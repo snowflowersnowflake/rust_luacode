@@ -9,6 +9,15 @@ use lua::{
     highlevel::Lua
 };
 use core::str;
+
+use core::arch::asm;
+use ckb_std::{
+    default_alloc,
+};
+
+ckb_std::entry!(program_entry);
+default_alloc!();
+
 fn main() {
     // 创建一个lua状态机
     let lua = Lua::new(0, 0);

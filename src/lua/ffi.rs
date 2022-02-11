@@ -1,9 +1,12 @@
+use core::ffi::c_void;
 use core::ptr;
-use std::{
-	os::raw::c_void, ffi::{
-		CStr, CString
-	}
-};
+// use std::{
+// 	os::raw::c_void, ffi::{
+// 		CStr, CString
+// 	}
+// };
+use core::str;
+use alloc::string::String;
 
 pub enum lua_State {}
 
@@ -117,15 +120,15 @@ impl Lua {
 		}
 	}
 
-	pub fn get_root(&self) -> String {
-		unsafe {
-			let vtype = lua_getglobal(self.L, cstr!("__root__"));
-			assert_eq!(vtype, LUA_TSTRING);
-			let value = self.to_string(-1);
-			lua_settop(self.L, -2);
-			value
-		}
-	}
+	// pub fn get_root(&self) -> String {
+	// 	unsafe {
+	// 		let vtype = lua_getglobal(self.L, cstr!("__root__"));
+	// 		assert_eq!(vtype, LUA_TSTRING);
+	// 		let value = self.to_string(-1);
+	// 		lua_settop(self.L, -2);
+	// 		value
+	// 	}
+	// }
 	//
 	// pub fn get_events(&self, drop: bool) -> Vec<Vec<lua_Event>> {
 	// 	let mut events = vec![];
@@ -201,12 +204,12 @@ impl Lua {
 	// 	}
 	// }
 
-	// pub fn load_string(&self, code: &str) {
-	// 	unsafe {
-	// 		let ret = luaL_loadstring(self.L, cstr!(code));
-	// 		check_ret(ret);
-	// 	}
-	// }
+	pub fn load_string(&self, code: &str) {
+		unsafe {
+			let ret = luaL_loadstring(self.L, cstr!(code));
+			check_ret(ret);
+		}
+	}
 
 	pub fn pcall(&self, nargs: i32, nresults: i32) {
 		unsafe {
@@ -238,31 +241,31 @@ impl Lua {
 		unsafe { lua_gettop(self.L) }
 	}
 
-	pub fn to_string(&self, index: i32) -> String {
+	pub fn to_string(&self, index: i32) -> &str {
 		unsafe { rstr!(lua_tolstring(self.L, index, ptr::null_mut())) }
 	}
-
+	//
 	pub fn is_string(&self, index: i32) -> bool {
 		unsafe { lua_isstring(self.L, index) == 1 }
 	}
-
-	pub fn push_function(&self, function: lua_CFunction) {
-		unsafe { lua_pushcclosure(self.L, function, 0) }
-	}
-
-	pub fn push_string(&self, value: &str) -> String {
-		unsafe { rstr!(lua_pushstring(self.L, cstr!(value))) }
-	}
-	
-	pub fn push_string_array(&self, value: Vec<String>) {
-		unsafe {
-			lua_createtable(self.L, value.len() as i32, 0);
-			for i in 0..value.len() {
-				lua_pushstring(self.L, cstr!(value[i].as_str()));
-				lua_rawseti(self.L, -2, (i + 1) as i64);
-			}
-		}
-	}
+	//
+	// pub fn push_function(&self, function: lua_CFunction) {
+	// 	unsafe { lua_pushcclosure(self.L, function, 0) }
+	// }
+	//
+	// pub fn push_string(&self, value: &str) -> String {
+	// 	unsafe { rstr!(lua_pushstring(self.L, cstr!(value))) }
+	// }
+	//
+	// pub fn push_string_array(&self, value: Vec<String>) {
+	// 	unsafe {
+	// 		lua_createtable(self.L, value.len() as i32, 0);
+	// 		for i in 0..value.len() {
+	// 			lua_pushstring(self.L, cstr!(value[i].as_str()));
+	// 			lua_rawseti(self.L, -2, (i + 1) as i64);
+	// 		}
+	// 	}
+	// }
 
 	pub fn push_int64(&self, value: i64) {
 		unsafe { lua_pushinteger(self.L, value) }
@@ -272,21 +275,21 @@ impl Lua {
 		unsafe { lua_tointegerx(self.L, index, ptr::null_mut()) }
 	}
 
-	pub fn to_int64_array(&self, index: i32) -> Vec<i64> {
-		let mut array = vec![];
-		unsafe {
-			let count = lua_rawlen(self.L, index) as i64;
-			for i in 0..count {
-				if lua_rawgeti(self.L, index, i + 1) != LUA_TNUMBER {
-					panic!("to_int64_array only support NUMBER object");
-				}
-				array.push(self.to_int64(-1));
-				lua_settop(self.L, -2);
-			}
-		}
-		array
-	}
-
+	// pub fn to_int64_array(&self, index: i32) -> Vec<i64> {
+	// 	let mut array = vec![];
+	// 	unsafe {
+	// 		let count = lua_rawlen(self.L, index) as i64;
+	// 		for i in 0..count {
+	// 			if lua_rawgeti(self.L, index, i + 1) != LUA_TNUMBER {
+	// 				panic!("to_int64_array only support NUMBER object");
+	// 			}
+	// 			array.push(self.to_int64(-1));
+	// 			lua_settop(self.L, -2);
+	// 		}
+	// 	}
+	// 	array
+	// }
+	//
 	pub fn to_string_array(&self, index: i32) -> Vec<String> {
 		let mut array = vec![];
 		unsafe {

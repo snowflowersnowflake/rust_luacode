@@ -1,6 +1,6 @@
-use std::{
-	io::prelude::*, fs::File, path::PathBuf
-};
+// use std::{
+// 	io::prelude::*, fs::File, path::PathBuf
+// };
 use super::{
 	ffi, inject
 };
@@ -55,7 +55,7 @@ impl Lua {
 
 	// run a concrete lua code and collect the events emited from the code for the caller
 	pub fn run(&self, lua_code: &str)  {
-		self.lua.do_string(lua_code.as_str());
+		self.lua.do_string(lua_code);
 		// self.lua.get_events(true)
 	}
 }
