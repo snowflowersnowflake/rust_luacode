@@ -1,21 +1,16 @@
 #![no_std]
-#![no_main]
-#![feature(asm_sym)]
-#![feature(lang_items)]
-#![feature(alloc_error_handler)]
-#![feature(panic_info_message)]
+
 mod lua;
 use lua::{
     highlevel::Lua
 };
 use core::str;
 
-use core::arch::asm;
+// use core::arch::asm;
 use ckb_std::{
     default_alloc,
 };
 
-ckb_std::entry!(program_entry);
 default_alloc!();
 
 fn main() {

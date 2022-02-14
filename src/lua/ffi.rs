@@ -1,14 +1,22 @@
 use core::ffi::c_void;
 use core::ptr;
+use cstr_core::{CString, CStr};
+use cstr_core::c_char;
 // use std::{
 // 	os::raw::c_void, ffi::{
 // 		CStr, CString
 // 	}
 // };
 use core::str;
+extern crate alloc;
 use alloc::string::String;
-
+use alloc::vec::Vec;
+use alloc::vec;
+// use super::lib;
+// use lib::{CStr,CString};
 pub enum lua_State {}
+
+
 
 type lua_KContext = *mut c_void;
 type lua_KFunction = unsafe extern "C" fn(state: *mut lua_State, status: i32, ctx: lua_KContext) -> i32;
@@ -120,17 +128,17 @@ impl Lua {
 		}
 	}
 
-	// pub fn get_root(&self) -> String {
-	// 	unsafe {
-	// 		let vtype = lua_getglobal(self.L, cstr!("__root__"));
-	// 		assert_eq!(vtype, LUA_TSTRING);
-	// 		let value = self.to_string(-1);
-	// 		lua_settop(self.L, -2);
-	// 		value
-	// 	}
-	// }
+	pub fn get_root(&self) -> String {
+		unsafe {
+			let vtype = lua_getglobal(self.L, cstr!("__root__"));
+			assert_eq!(vtype, LUA_TSTRING);
+			let value = self.to_string(-1);
+			lua_settop(self.L, -2);
+			value
+		}
+	}
 	//
-	// pub fn get_events(&self, drop: bool) -> Vec<Vec<lua_Event>> {
+	// pub fn get_events(&self, droxp: bool) -> Vec<Vec<lua_Event>> {
 	// 	let mut events = vec![];
 	// 	unsafe {
 	// 		if self.get_global("__events__", false) && lua_type(self.L, -1) == LUA_TTABLE {
@@ -241,7 +249,7 @@ impl Lua {
 		unsafe { lua_gettop(self.L) }
 	}
 
-	pub fn to_string(&self, index: i32) -> &str {
+	pub fn to_string(&self, index: i32) -> String {
 		unsafe { rstr!(lua_tolstring(self.L, index, ptr::null_mut())) }
 	}
 	//

@@ -16,7 +16,7 @@ impl Lua {
 		let mut lua = ffi::Lua::new(time, clock);
 		lua.set_error_func(inject::error);
 		lua.register("print", inject::print);
-		lua.register("require", inject::require);
+		// lua.register("require", inject::require);
         Lua {
 			lua
 		}

@@ -5,15 +5,20 @@ use super::ffi;
 use core::str;
 use ckb_std::debug;
 use alloc::{vec, vec::Vec};
+use cstr_core::{CString, CStr, cstr};
+extern crate alloc;
+use cstr_core::c_char;
 use alloc::string::String;
 // collect exception message from lua vm
-// pub unsafe extern "C" fn error(L: *mut ffi::lua_State) -> i32 {
-// 	let lua = ffi::Lua::emplace(L);
-// 	if lua.is_string(-1) {
-// 		println!("Error => {}", lua.to_string(-1));
-// 	}
-// 	return 0;
-// }
+pub unsafe extern "C" fn error(L: *mut ffi::lua_State) -> i32 {
+	let lua = ffi::Lua::emplace(L);
+	if lua.is_string(-1) {
+		// println!("Error => {}", lua.to_string(-1));
+		debug!("Error => {}", lua.to_string(-1));
+
+	}
+	return 0;
+}
 
 pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
 	let lua = ffi::Lua::emplace(L);
@@ -25,16 +30,45 @@ pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
 			output += "_unknown_";
 		}
 	}
-	debug!("{:?}", output);
+	debug!("{}", output);
 	return 0;
 }
 
+// pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
+// 	let lua = ffi::Lua::emplace(L);
+// 	let mut output = CString::new(valid_utf8).expect("CString::new failed");
+// 	output.into_string().err().expect("into_string().err() failed");
+// 	// let mut output = String::new();
+// 	for i in 0..lua.get_top() {
+// 		if lua.is_string(i + 1) {
+// 			output += lua.to_string(i + 1).as_str();
+// 		} else {
+// 			output += "_unknown_";
+// 		}
+// 	}
+// 	debug!("{:?}", output);
+// 	return 0;
+// }
+// pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
+// 	let lua = ffi::Lua::emplace(L);
+// 	let mut output = String::new();
+// 	for i in 0..lua.get_top() {
+// 		if lua.is_string(i + 1) {
+// 			output += lua.to_string(i + 1).as_str();
+// 		} else {
+// 			output += "_unknown_";
+// 		}
+// 	}
+// 	println!("{}", output);
+// 	return 0;
+// }
 // collect only string or string-castable variables in lua stack and print them
 // pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
 // 	let lua = ffi::Lua::emplace(L);
 // 	for i in 0..lua.get_top() {
 // 		if lua.is_string(i + 1) {
-// 			let output =  lua.to_string(i + 1);
+// 			let output: &cstr_core::CStr = cstr_core::cstr!("hello world");
+// 			// let output:cstr!() =  lua.to_string(i + 1).as_str();
 // 		} else {
 // 			let output = "_unknown_";
 // 		}
@@ -57,9 +91,10 @@ pub unsafe extern "C" fn print(L: *mut ffi::lua_State) -> i32 {
 // 			ret = 1;
 // 		}
 // 	} else {
-// 		let mut file = File::open(path.clone()).expect("file not found");
-// 		let mut code: String = String::new();
-// 		file.read_to_string(&mut code).expect("reading lua file");
+// 		// let mut file = File::open(path.clone()).expect("file not found");
+// 		// let mut code: String = String::new();
+// 		let mut code = CString::new(()).expect("CString::new failed");
+// 		// file.read_to_string(&mut code).expect("reading lua file");
 // 		lua.do_string(code.as_str());
 // 		if lua.get_top() == previous_top {
 // 			ret = 0;
