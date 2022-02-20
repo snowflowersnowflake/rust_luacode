@@ -1,5 +1,6 @@
 # rust_luacode
 
+### task 
 - 前期初步调研。相关方案，技术路线调研。
 - [x]  采用语言，lua、nim、mruby和mpython 等一切可以生成rv二进制文件的语言
 - [x]  在本地采用基于wsl的ubuntu系统，进行x86到rv的跨平台编译
@@ -28,7 +29,9 @@
     - [x]  基于rust [build.rs](http://build.rs) 学习编译前操作，并调用第三方C/C++库，在本地的cargo工程中整合之前实现的lua vm，编译成指定目标类型二进制包，从而完成rust集成lua解释器的部分
     - [x]  进行rust中调用luavm读取lua code的设计。基于rlua的ffi进行改进，lua状态机构建，基于instance进行方法注册，抽象highlevel函数，实现lua code的打印
     - [x]  在lua code可以打印的基础上，将部分引用的string和vec等在no-std下非法的类型在core中找替换类型，但部分const类型转换后影响解释器，底层编译错误
-    - [ ]  先不构建capsule合约，在本地的cargo项目中调试走通流程，处理rust中一些恐慌的问题
 - mvp系统。实现单一功能的抽象，完成链下测试与测试网部署等等工作。
 - high-level部分扩展。
+
+### work on std env 
+
 
