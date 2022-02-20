@@ -34,11 +34,20 @@
 
 ### work on std env 
 
-use lua_demo_local for a cargo proj, please prepare your cross-compile toolchain for rv, then build proj 
+use lua_demo_local for a cargo proj, ples prepare your cross-compile toolchain for rv, then build proj 
 
 ![1](img.png)
 
+you will see the luacode finished by lua_vm 
+
 ### work on contract env 
+
+use lua_contract for a capsule proj, ples prepare your ckb contract env and docker started, then build proj 
+
+![2](img2.jpg)
+
+you will see the failure because of the convert from some constant values in ffi code 
+
 
 
 
