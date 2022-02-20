@@ -1,6 +1,6 @@
 # rust_luacode
 
-### task 
+### task and plan
 - 前期初步调研。相关方案，技术路线调研。
 - [x]  采用语言，lua、nim、mruby和mpython 等一切可以生成rv二进制文件的语言
 - [x]  在本地采用基于wsl的ubuntu系统，进行x86到rv的跨平台编译
