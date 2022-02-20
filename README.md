@@ -48,6 +48,8 @@ use lua_contract for a capsule proj, ples prepare your ckb contract env and dock
 
 you will see the failure because of the convert from some constant values in ffi code 
 
+some work on no-std cargo proj was tried in ./src 
+
 
 
 
