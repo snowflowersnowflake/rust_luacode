@@ -34,4 +34,11 @@
 
 ### work on std env 
 
+use lua_demo_local for a cargo proj, please prepare your cross-compile toolchain for rv, then build proj 
+
+![]()
+
+### work on contract env 
+
+
 
